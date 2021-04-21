@@ -107,6 +107,7 @@ export default {
         this.contatos = resposta.data
       }).catch(e => {
         console.log(e)
+        resposta = []
       })
     },
 
@@ -123,6 +124,7 @@ export default {
               this.errors = {}
             }).catch(e => {
               this.errors = e.response.data.errors
+              resposta = []
             })
         } else {
 
@@ -140,6 +142,7 @@ export default {
             this.listar()
           }).catch(e => {
             this.errors = e.response.data.errors
+            resposta = []
           })
 
         } else {
@@ -161,9 +164,10 @@ export default {
 
         Contato.apagar(contato).then(resposta => {
           this.listar()
-          this.errors = {}
+          this.errors = {resposta}
         }).catch(e => {
           this.errors = e.response.data.errors
+          resposta = []
         })
 
       }
