@@ -106,8 +106,7 @@ export default {
       Contato.listar().then(resposta => {
         this.contatos = resposta.data
       }).catch(e => {
-        console.log(e)
-        resposta = []
+        this.errors = e.response.data.errors
       })
     },
 
@@ -122,9 +121,9 @@ export default {
               alert('Cadastrado com sucesso!')
               this.listar()
               this.errors = {}
+              resposta.data = []
             }).catch(e => {
               this.errors = e.response.data.errors
-              resposta = []
             })
         } else {
 
@@ -140,9 +139,9 @@ export default {
             this.errors = {}
             alert('Atualizado com sucesso!')
             this.listar()
+            resposta.data = []
           }).catch(e => {
             this.errors = e.response.data.errors
-            resposta = []
           })
 
         } else {
@@ -164,10 +163,10 @@ export default {
 
         Contato.apagar(contato).then(resposta => {
           this.listar()
-          this.errors = {resposta}
+          this.errors = {}
+          resposta.data = []
         }).catch(e => {
           this.errors = e.response.data.errors
-          resposta = []
         })
 
       }
