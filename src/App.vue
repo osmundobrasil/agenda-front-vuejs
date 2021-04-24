@@ -2,6 +2,7 @@
   <div id="app">
 
     <nav>
+      //Título da Página
       <div class="nav-wrapper blue darken-1">
         <a href="#" class="brand-logo center">Agenda</a>
       </div>
@@ -9,6 +10,7 @@
 
     <div class="container">
 
+      //Lista erros de acesso a API.
       <ul>
         <li v-for="(erro, index) of errors" :key="index">
           campo <b>{{erro.field}}</b> - {{erro.defaultMessage}}
@@ -16,6 +18,7 @@
       </ul>
 
 
+      //Formulário para edição de um contato
       <form @submit.prevent="salvar">
 
           <label>NOME (Preenchimento obrigatório)</label>
@@ -26,6 +29,7 @@
           <input type="text" placeholder="" v-model="contato.tx_email" >
           <div> 
               <label>SEXO: </label>
+              //Opções para o campo sexo
               <input type="radio" id="Masculino" value="Masculino" v-model="contato.tx_sexo">
               <label claSS="campo-sexo-masculino" for="Masculino">Masculino</label>
               <input type="radio" id="Feminino" value="Feminino" v-model="contato.tx_sexo">
@@ -40,7 +44,7 @@
       <table>
 
         <thead>
-
+          //Cabeçalho da lista de contatos
           <tr>
             <th>NOME</th>
             <th>TELEFONE</th>
@@ -53,6 +57,7 @@
 
         <tbody>
 
+          //Lista de contatos
           <tr v-for="contato of contatos" :key="contato.id_contato">
 
             <td>{{ contato.tx_nome }}</td>
@@ -60,6 +65,7 @@
             <td>{{ contato.tx_email }}</td>
             <td>{{ contato.tx_sexo }}</td>
             
+            //Botões de edição e exclusão de contato
             <td>
               <button @click="editar(contato)" class="waves-effect btn-small blue darken-1"><i class="material-icons">create</i></button>
               <button @click="apagar(contato)" class="waves-effect btn-small red darken-1"><i class="material-icons">delete_sweep</i></button>
@@ -78,8 +84,10 @@
 
 <script>
 
+//Link para acesso aos dados da API
 import Contato from './services/contatos'
 
+//Estrutura de um contato retornada pela API
 export default {
   name: 'app',
   data () {
@@ -100,8 +108,10 @@ export default {
     this.listar()
   },
 
+  //Metodos que consomem dados da API
   methods:{
     
+    //Consome todos os contatos da API
     listar(){
       Contato.listar().then(resposta => {
         this.contatos = resposta.data
@@ -110,10 +120,15 @@ export default {
       })
     },
 
+    //Salva um novo contato ou Atualiza um contato em edição 
     salvar(){
 
+      //Verifica se o contato não tem ID. Só salva o contato se não tiver ID.
+      //O ID é gerado automaticamente pela API.
       if(!this.contato.id_contato){
 
+        //Verifica se os campos Nome e Telefone estão preenchidos.
+        //Estes campos são de preenchimento obrigatórios.
         if(this.contato.tx_nome && this.contato.tx_telefone){
 
             Contato.salvar(this.contato).then(resposta => {
@@ -130,8 +145,11 @@ export default {
             alert('Os campo Nome e Telefone são de preenchimento obrigatórios!')
         }
 
+      //Se o contato tem ID, então salva os  valores que foram editados.
       }else{
 
+        //Verifica se os campos Nome e Telefone estão preenchidos.
+        //Estes campos são de preenchimento obrigatórios.
         if(this.contato.tx_nome && this.contato.tx_telefone){
 
           Contato.atualizar(this.contato).then(resposta => {
@@ -153,10 +171,12 @@ export default {
       
     },
 
+    //Envia os dados do contato para o formulário de edição
     editar(contato){
         this.contato = contato
     },
     
+    //Apaga um contato da lista de contatos.
     apagar(contato){
 
       if(confirm('Deseja excluir o contato?')){
@@ -180,6 +200,7 @@ export default {
 }
 </script>
 
+//Estilo do campo sexo.
 <style>
 
    .campo-sexo-feminino { margin: 10px; 
